@@ -129,7 +129,7 @@ HTTP 200 OK.
 ![Unauthorised API Request](evidence/05-unauthorised-401.png)
 
 A direct request without a Bearer token receives
-HTTP 401 Unauthorized.
+HTTP 401 Unauthorised.
 
 ## Customer Value
 
