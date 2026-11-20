@@ -1,0 +1,439 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>SecureDesk | Identity Dashboard</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+    <!-- NAVIGATION -->
+    <header class="topbar">
+
+        <a href="/dashboard" class="brand">
+            <span class="brand-symbol">◆</span>
+            <span>Secure<span class="accent">Desk</span></span>
+        </a>
+
+        <div class="topbar-right">
+            <span class="auth-indicator">
+                <span class="status-dot"></span>
+                Authenticated
+            </span>
+
+            <a href="/logout" class="logout-btn">Log Out</a>
+        </div>
+
+    </header>
+
+    <main class="container">
+
+        <!-- HERO SECTION -->
+        <section class="hero">
+
+            <div class="hero-copy">
+
+                <p class="eyebrow">
+                    <span class="status-dot"></span>
+                    SECUREDESK / IDENTITY SECURITY
+                </p>
+
+                <h1>
+                    Identity.<br>
+                    <span class="accent">Verified.</span>
+                </h1>
+
+                <p class="hero-description">
+                    A secure customer experience powered by
+                    Auth0 authentication, JWT validation and
+                    role-based access control.
+                </p>
+
+                <!-- SINGLE ACCESS CONTROL DROPDOWN -->
+                <details class="access-dropdown"
+                         id="accessDropdown">
+
+                    <summary>
+                        Explore Access Control
+                        <span class="chevron">⌄</span>
+                    </summary>
+
+                    <div class="dropdown-menu">
+
+                        <button type="button"
+                                onclick="runDemo('customer')">
+                            Customer API Test
+                        </button>
+
+                        <button type="button"
+                                onclick="runDemo('admin')">
+                            Administrator API Test
+                        </button>
+
+                        <a href="#api-demo"
+                           onclick="document.getElementById('accessDropdown').open = false">
+                            View Testing Console
+                        </a>
+
+                    </div>
+
+                </details>
+
+                <p class="signed-in">
+                    Signed in as
+                    <strong>
+                        {{ user.get("name", "Customer") }}
+                    </strong>
+                </p>
+
+            </div>
+
+            <!-- ANIMATED SECURITY GRAPHIC -->
+            <div class="hero-visual" aria-hidden="true">
+
+                <div class="dot-grid"></div>
+
+                <div class="security-ring ring-one"></div>
+                <div class="security-ring ring-two"></div>
+
+                <div class="security-core">
+
+                    <svg width="64"
+                         height="64"
+                         viewBox="0 0 64 64"
+                         fill="none"
+                         stroke="currentColor"
+                         stroke-width="2.5">
+
+                        <path d="M20 28v-8a12 12 0 0 1 24 0v8"/>
+
+                        <rect x="14" y="28"
+                              width="36" height="28"
+                              rx="6"/>
+
+                        <circle cx="32" cy="40" r="3"/>
+                        <path d="M32 43v5"/>
+
+                    </svg>
+
+                    <strong>IDENTITY VERIFIED</strong>
+                    <small>AUTH0 · JWT · RBAC</small>
+
+                </div>
+
+                <span class="floating-label top-label">
+                    TOKEN VERIFIED
+                </span>
+
+                <span class="floating-label bottom-label">
+                    ACCESS CONTROLLED
+                </span>
+
+            </div>
+
+        </section>
+
+        <!-- INFORMATION CARDS -->
+        <section class="dashboard-grid"
+                 aria-label="Security overview">
+
+            <div class="info-card">
+                <span class="card-number">01 / AUTHENTICATION</span>
+                <h3>Authentication Status</h3>
+                <p class="success-text">
+                    ● Authenticated
+                </p>
+            </div>
+
+            <div class="info-card">
+                <span class="card-number">02 / IDENTITY</span>
+                <h3>Identity Provider</h3>
+                <p>Auth0 Universal Login</p>
+            </div>
+
+            <div class="info-card">
+                <span class="card-number">03 / TOKEN SECURITY</span>
+                <h3>API Security</h3>
+                <p>RS256 JWT Validation</p>
+            </div>
+
+            <div class="info-card">
+                <span class="card-number">04 / AUTHORISATION</span>
+                <h3>Access Control</h3>
+                <p>Role-Based Permissions</p>
+            </div>
+
+        </section>
+
+        <!-- LIVE API TEST CONSOLE -->
+       
+<section class="api-console" id="api-demo">
+
+    <p class="eyebrow">LIVE SECURITY DEMONSTRATION</p>
+    <h2>API Access Console</h2>
+    <p class="console-intro">
+        Select a protected resource to test your
+        current Auth0 permissions.
+    </p>
+
+    <!-- INTERACTIVE API CARDS -->
+    <div class="api-choices">
+
+        <button type="button"
+                class="api-choice"
+                data-api="customer"
+                aria-pressed="false"
+                onclick="runDemo('customer')">
+            <span class="api-choice-icon">◇</span>
+            <strong>Customer API</strong>
+            <small>read:customer-data</small>
+            <span class="api-choice-action">Run Test →</span>
+        </button>
+
+        <button type="button"
+                class="api-choice"
+                data-api="admin"
+                aria-pressed="false"
+                onclick="runDemo('admin')">
+            <span class="api-choice-icon">⬡</span>
+            <strong>Administrator API</strong>
+            <small>read:admin-data</small>
+            <span class="api-choice-action">Run Test →</span>
+        </button>
+
+    </div>
+
+    <!-- GRAPHICAL ACCESS DECISION -->
+    <div class="decision-panel"
+         id="decision-panel"
+         data-state="idle"
+         aria-live="polite">
+
+        <div class="decision-topline">
+            <span>AUTHORIZATION RESULT</span>
+            <span id="http-code" class="decision-code">
+                NOT RUN
+            </span>
+        </div>
+
+        <div class="decision-icon" id="decision-icon">
+            ◇
+        </div>
+
+        <h3 id="decision-title">Ready to test</h3>
+
+        <p id="decision-description">
+            Choose a resource above to check whether
+            your current account has permission.
+        </p>
+
+        <div class="permission-line">
+            Required permission:
+            <code id="required-permission">—</code>
+        </div>
+
+    </div>
+
+    <!-- ACCESSIBLE RESOURCES -->
+    <div class="resource-panel"
+         id="resource-panel"
+         hidden>
+
+        <h3>Accessible Resources</h3>
+        <ul id="resource-list"></ul>
+
+    </div>
+
+    <!-- OPTIONAL TECHNICAL EVIDENCE -->
+    <details class="technical-details">
+        <summary>View technical API response</summary>
+        <pre id="raw-response">No request made yet.</pre>
+    </details>
+
+</section>
+
+
+            <p class="console-note">
+                HTTP 200 = Access granted ·
+                HTTP 403 = Insufficient permissions ·
+                HTTP 401 = Unauthorised
+            </p>
+
+        </section>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <span>SecureDesk · Identity & Access Management Demo</span>
+        <span>Powered by Flask + Auth0</span>
+    </footer>
+
+    <!-- API TESTING JAVASCRIPT -->
+    
+<script>
+async function runDemo(resource) {
+
+    if (!["customer", "admin"].includes(resource)) {
+        return;
+    }
+
+    const dropdown =
+        document.getElementById("accessDropdown");
+
+    const panel =
+        document.getElementById("decision-panel");
+
+    const code =
+        document.getElementById("http-code");
+
+    const icon =
+        document.getElementById("decision-icon");
+
+    const title =
+        document.getElementById("decision-title");
+
+    const description =
+        document.getElementById("decision-description");
+
+    const permission =
+        document.getElementById("required-permission");
+
+    const resourcePanel =
+        document.getElementById("resource-panel");
+
+    const resourceList =
+        document.getElementById("resource-list");
+
+    const raw =
+        document.getElementById("raw-response");
+
+    // Close the hero dropdown
+    dropdown.open = false;
+
+    // Highlight the selected API
+    document.querySelectorAll(".api-choice").forEach(button => {
+        const selected = button.dataset.api === resource;
+        button.classList.toggle("selected", selected);
+        button.setAttribute("aria-pressed", String(selected));
+    });
+
+    // Scroll to the console
+    document.getElementById("api-demo").scrollIntoView({
+        behavior: "smooth",
+        block: "start"
+    });
+
+    // Show loading state
+    panel.dataset.state = "loading";
+    code.textContent = "TESTING";
+    icon.textContent = "⟳";
+    title.textContent = "Checking permissions...";
+    description.textContent = "Validating API access.";
+    permission.textContent = "read:" +
+        (resource === "customer" ? "customer-data" : "admin-data");
+
+    resourcePanel.hidden = true;
+    resourceList.replaceChildren();
+    raw.textContent = "Request in progress...";
+
+    try {
+        const response = await fetch(`/demo/${resource}`, {
+            credentials: "same-origin",
+            headers: { "Accept": "application/json" },
+            cache: "no-store"
+        });
+
+        const contentType =
+            response.headers.get("content-type") || "";
+
+        if (!contentType.includes("application/json")) {
+            throw new Error("Non-JSON response");
+        }
+
+        const data = await response.json();
+        const status = Number(data.status_code ?? response.status);
+        const result = data.result ?? data;
+
+        code.textContent = `HTTP ${status}`;
+        raw.textContent = JSON.stringify(data, null, 2);
+
+        if (status === 200) {
+
+            panel.dataset.state = "success";
+            icon.textContent = "✓";
+            title.textContent = "Access Granted";
+            description.textContent =
+                "The verified access token contains the required permission.";
+
+            if (Array.isArray(result.resources)) {
+                result.resources.forEach(item => {
+                    const li = document.createElement("li");
+                    li.textContent = item;
+                    resourceList.appendChild(li);
+                });
+
+                resourcePanel.hidden =
+                    result.resources.length === 0;
+            }
+
+        } else if (status === 403) {
+
+            panel.dataset.state = "denied";
+            icon.textContent = "✕";
+            title.textContent = "Access Denied";
+            description.textContent =
+                "Your access token is valid, but the required permission is missing.";
+
+        } else if (status === 401) {
+
+            panel.dataset.state = "error";
+            icon.textContent = "!";
+            title.textContent = "Unauthorized";
+            description.textContent =
+                "Authentication is missing or the access token could not be validated.";
+
+        } else {
+
+            panel.dataset.state = "error";
+            icon.textContent = "!";
+            title.textContent = "Request Unsuccessful";
+            description.textContent =
+                "The API returned HTTP " + status;
+        }
+
+    } catch (error) {
+
+        panel.dataset.state = "error";
+        code.textContent = "ERROR";
+        icon.textContent = "!";
+        title.textContent = "Connection Error";
+        description.textContent =
+            "Unable to read the API response. Check your Flask server and login session.";
+
+        raw.textContent = "API request failed.";
+    }
+}
+
+// Close dropdown when clicking outside
+document.addEventListener("click", function(event) {
+    const dropdown =
+        document.getElementById("accessDropdown");
+
+    if (dropdown && !dropdown.contains(event.target)) {
+        dropdown.open = false;
+    }
+});
+</script>
+
+    </script>
+
+</body>
+</html>

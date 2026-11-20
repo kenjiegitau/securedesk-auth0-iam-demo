@@ -1,0 +1,218 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>SecureDesk | Identity Security</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+    <!-- NAVIGATION -->
+    <header class="topbar">
+
+        <a href="/" class="brand">
+            <span class="brand-symbol">◆</span>
+            <span>Secure<span class="accent">Desk</span></span>
+        </a>
+
+        <nav class="landing-nav" aria-label="Main navigation">
+            <a href="#capabilities" class="landing-nav-link">
+                Capabilities
+            </a>
+
+            {% if user %}
+                <a href="{{ url_for('dashboard') }}"
+                   class="landing-nav-action">
+                    Dashboard ↗
+                </a>
+            {% else %}
+                <a href="{{ url_for('login') }}"
+                   class="landing-nav-action">
+                    Sign In ↗
+                </a>
+            {% endif %}
+        </nav>
+
+    </header>
+
+    <main class="container">
+
+        <!-- LANDING HERO -->
+        <section class="landing-hero">
+
+            <div class="landing-copy">
+
+                <div class="landing-eyebrow">
+                    <span class="status-dot"></span>
+                    IDENTITY & ACCESS MANAGEMENT
+                </div>
+
+                <h1>
+                    Secure access.<br>
+                    <span class="accent">Clear control.</span>
+                </h1>
+
+                <p class="landing-description">
+                    Modern authentication and intelligent
+                    access control for customer applications.
+
+                    SecureDesk demonstrates how Auth0 protects
+                    identities, validates API requests and
+                    enforces granular permissions.
+                </p>
+
+                <!-- AUTHENTICATION ACTIONS -->
+                <div class="landing-actions">
+
+                    {% if user %}
+
+                        <a href="{{ url_for('dashboard') }}"
+                           class="landing-primary-btn">
+                            Open Dashboard →
+                        </a>
+
+                        <a href="{{ url_for('logout') }}"
+                           class="landing-secondary-btn">
+                            Log Out
+                        </a>
+
+                    {% else %}
+
+                        <a href="{{ url_for('login') }}"
+                           class="landing-primary-btn">
+                            Log In with Auth0 →
+                        </a>
+
+                        <a href="#capabilities"
+                           class="landing-secondary-btn">
+                            Explore Features
+                        </a>
+
+                    {% endif %}
+
+                </div>
+
+                {% if user %}
+                    <p class="landing-session">
+                        <span class="status-dot"></span>
+                        Authenticated as
+                        <strong>
+                            {{ user.get("name", "Customer") }}
+                        </strong>
+                    </p>
+                {% else %}
+                    <p class="landing-session">
+                        Authentication powered by Auth0 Universal Login
+                    </p>
+                {% endif %}
+
+            </div>
+
+            <!-- ANIMATED IDENTITY GRAPHIC -->
+            <div class="landing-visual" aria-hidden="true">
+
+                <div class="landing-grid"></div>
+                <div class="landing-ring landing-ring-outer"></div>
+                <div class="landing-ring landing-ring-inner"></div>
+
+                <div class="landing-core">
+
+                    <svg width="72" height="72"
+                         viewBox="0 0 64 64"
+                         fill="none"
+                         stroke="currentColor"
+                         stroke-width="2.5">
+
+                        <path d="M20 28v-8a12 12 0 0 1 24 0v8"/>
+
+                        <rect x="14" y="28"
+                              width="36" height="28" rx="6"/>
+
+                        <circle cx="32" cy="40" r="3"/>
+                        <path d="M32 43v5"/>
+
+                    </svg>
+
+                    <strong>IDENTITY SECURITY</strong>
+                    <small>AUTH0 · OIDC · RBAC</small>
+
+                </div>
+
+                <div class="landing-visual-label landing-label-top">
+                    SECURE AUTHENTICATION
+                </div>
+
+                <div class="landing-visual-label landing-label-bottom">
+                    PROTECTED API ACCESS
+                </div>
+
+            </div>
+
+        </section>
+
+        <!-- PLATFORM CAPABILITIES -->
+        <section class="landing-features" id="capabilities">
+
+            <div class="landing-section-heading">
+                <p class="eyebrow">SECURE BY DESIGN</p>
+                <h2>One platform. Multiple layers of protection.</h2>
+                <p>
+                    Explore the identity and access controls
+                    implemented in this demonstration.
+                </p>
+            </div>
+
+            <div class="landing-feature-grid">
+
+                <article class="landing-feature">
+                    <span class="landing-feature-number">01 / IDENTITY</span>
+                    <div class="landing-feature-icon">◇</div>
+                    <h3>Universal Authentication</h3>
+                    <p>
+                        Customer sign-in using Auth0 Universal Login
+                        and OpenID Connect.
+                    </p>
+                </article>
+
+                <article class="landing-feature">
+                    <span class="landing-feature-number">02 / SECURITY</span>
+                    <div class="landing-feature-icon">⬡</div>
+                    <h3>Verified API Tokens</h3>
+                    <p>
+                        JWT signature, audience, issuer and
+                        expiry validation for protected APIs.
+                    </p>
+                </article>
+
+                <article class="landing-feature">
+                    <span class="landing-feature-number">03 / ACCESS</span>
+                    <div class="landing-feature-icon">✧</div>
+                    <h3>Granular Permissions</h3>
+                    <p>
+                        Role-based permissions distinguish
+                        customer and administrator access.
+                    </p>
+                </article>
+
+            </div>
+
+        </section>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <span>SecureDesk · Identity & Access Management</span>
+        <span>Flask + Auth0 · Local proof of concept</span>
+    </footer>
+
+</body>
+</html>
